@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ChatRecipe前端介面</title>
+    <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+	function initializeApp(data) {  //初始化LIFF
+		var userid = data.context.userId;  //取得ID
+	}
+
+	function pushMsg(people, l_food, n_food) {
+		if (people == '' || l_food == '' || n_food == '') {  //資料檢查
+			alert('每個項目都必須輸入！');
+			return;
+		}
+		var msg = "###";  //回傳訊息字串
+		msg = msg + "請給我" + people + "的菜單，";
+		msg = msg + "要有" + l_food;
+		msg = msg + "，不要有" + n_food;
+		//msg = msg + proom;
+		liff.sendMessages([  //推播訊息
+			{ type: 'text',
+			  text: msg
+			}
+		])
+			.then(() => {
+				liff.closeWindow();  //關閉視窗
+			});
+	}
+
+	$(document).ready(function () {
+		liff.init(function (data) {  //初始化LIFF
+			initializeApp(data);
+		});
+		
+		$('#sure').click(function (e) {  //按下確定鈕
+			pushMsg($('#people').val(), $('#like_food').val(), $('#no_food').val());
+		});
+	});
+</script>
+</head>
+<body>
+    <br>
+    <h1><center>歡迎使用ChatRecipe聊天食譜機器人</center></h1>
+    <div class="row" style="margin: 10px">
+        <div class="col-6" style="margin: 5px auto;">
+            <center>
+                <label>人數(ex: 若為5人，請輸入5人份)</label>
+                <input type="text" id="people" class="form-control" />
+                <br />
+                <label>飲食偏好</label>
+                <input type="text" id="like_food" value="" class="form-control" />
+                <br />
+                <label>飲食禁忌</label>
+                <input type="text" id="no_food" class="form-control" />
+                <br />            
+                <button class="btn btn-warning btn-block" id="sure">確定</button>
+            </center>            
+        </div>
+    </div>
+</body>
+</html>
