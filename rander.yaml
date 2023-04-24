@@ -1,0 +1,11 @@
+services:
+- type: web
+  name: liff-starter-vanilla
+  env: static
+  repo: https://github.com/line/line-liff-v2-starter.git
+  buildCommand: cd src/vanilla && yarn && yarn install && yarn build
+  staticPublishPath: src/vanilla/dist
+  autoDeploy: false
+  envVars:
+  - key: LIFF_ID
+    sync: false
